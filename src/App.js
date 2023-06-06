@@ -1,14 +1,15 @@
 import { Provider } from "react-redux";
 import "./App.css";
 import { store } from "./app/store";
-
-import Counter from "./features/counter/Counter";
+import AddTodoForm from "./components/todos/AddTodoForm";
+import TodoList from "./components/todos/TodoList";
 
 function App() {
   return (
     <Provider store={store}>
       <div className="App">
-        <Counter />
+        <AddTodoForm />
+        <TodoList />
       </div>
     </Provider>
   );
