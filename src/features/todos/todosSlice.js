@@ -1,11 +1,22 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
-const initialState = [
-  { id: 1, title: "todo1", completed: false },
-  { id: 2, title: "todo2", completed: false },
-  { id: 3, title: "todo3", completed: false },
-  { id: 4, title: "todo4", completed: false },
-];
+export const getAsyncTodos = createAsyncThunk(
+  "todos/getAsyncTodos",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get("http://localhost:3001/todos");
+      return response.data;
+    } catch (error) {
+      return rejectWithValue([], error);
+    }
+  }
+);
+const initialState = {
+  todos: [],
+  loading: false,
+  error: null,
+};
 
 const todosSlice = createSlice({
   name: "todos",
@@ -17,23 +28,41 @@ const todosSlice = createSlice({
         title: action.payload.title,
         completed: false,
       };
-      state.push(newTodo);
+      state.todos.push(newTodo);
     },
     deleteTodo: (state, action) => {
       //didn't work for me!
-      // const filteredTodos = state.filter(
+      // const filteredTodos = state.todos.filter(
       //   (item) => item.id !== action.payload.id
       // );
-      // state = filteredTodos;
+      // state.todos = filteredTodos;
 
-      const index = state.findIndex(
+      const index = state.todos.findIndex(
         (item) => item.id === Number(action.payload.id)
       );
-      state.splice(index, 1);
+      state.todos.splice(index, 1);
     },
     toggleTodo: (state, action) => {
-      const item = state.find((item) => item.id === Number(action.payload.id));
+      const item = state.todos.find(
+        (item) => item.id === Number(action.payload.id)
+      );
       item.completed = !item.completed;
+    },
+  },
+  extraReducers: {
+    [getAsyncTodos.pending]: (state, action) => {
+      return { ...state, todos: [], loading: true, error: null };
+    },
+    [getAsyncTodos.fulfilled]: (state, action) => {
+      return { ...state, todos: action.payload, loading: false, error: null };
+    },
+    [getAsyncTodos.rejected]: (state, action) => {
+      return {
+        ...state,
+        todos: [],
+        loading: false,
+        error: action.meta.message,
+      };
     },
   },
 });

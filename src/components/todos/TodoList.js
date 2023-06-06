@@ -1,11 +1,21 @@
 import styles from "./TodoList.module.css";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteTodo, toggleTodo } from "../../features/todos/todosSlice";
+import {
+  deleteTodo,
+  toggleTodo,
+  getAsyncTodos,
+} from "../../features/todos/todosSlice";
+import { useEffect } from "react";
 
 const TodoList = () => {
-  const todos = useSelector((state) => state.todos);
+  const { todos, error, loading } = useSelector((state) => state.todos);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(getAsyncTodos());
+  }, []);
+  if (loading) return <p>Loading ...</p>;
+  if (error) return <p>{error}</p>;
   return (
     <div className={styles.mainContainer}>
       <section>
