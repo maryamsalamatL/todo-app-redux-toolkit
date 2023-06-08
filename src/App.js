@@ -8,7 +8,15 @@ function App() {
   return (
     <Provider store={store}>
       <div className="App">
-        <AddTodoForm />
+        <header>
+          <h2>TO DO APP</h2>
+          <div className="nav">
+            <a href="#new-todo-section">Todos</a>
+            <a href="#important-todo-section">Important</a>
+            <a href="#completed-todo-section">Completed</a>
+          </div>
+        </header>
+
         <TodoList />
       </div>
     </Provider>

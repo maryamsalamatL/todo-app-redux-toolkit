@@ -1,0 +1,58 @@
+li {
+  border: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0px;
+  padding: 10px 0px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+li.yellowBorder {
+  border-left: 5px solid var(--yellow-color);
+}
+li.greenBorder {
+  border-left: 5px solid var(--green-color);
+}
+li.pinkBorder {
+  border-left: 5px solid var(--pink-color);
+}
+
+.titleBox {
+  width: 40%;
+  display: flex;
+  align-items: center;
+  padding: 0px 10px;
+}
+.titleBox input {
+  width: 13px;
+  height: 13px;
+  margin-right: 10px;
+
+  accent-color: var(--text-color);
+}
+
+.btnBox {
+  width: 20%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0px 10px;
+}
+.btnBox button {
+  background-color: inherit;
+  display: flex;
+  align-items: center;
+  border: none;
+  outline: none;
+  font-size: 17px;
+}
+.importantBtn {
+  color: var(--green-color);
+}
+.removeBtn {
+  color: var(--red-color);
+}
