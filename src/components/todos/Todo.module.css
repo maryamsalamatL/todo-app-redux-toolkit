@@ -1,4 +1,5 @@
 li {
+  /* background-color: var(--main-white); */
   border: 1px solid var(--border-color);
   display: flex;
   justify-content: space-between;
@@ -51,8 +52,35 @@ li.pinkBorder {
   font-size: 17px;
 }
 .importantBtn {
-  color: var(--green-color);
+  /*color: var(--green-color);
+  */
+  color: var(--text-color);
 }
 .removeBtn {
-  color: var(--red-color);
+  /* color: var(--red-color); */
+  color: var(--text-color);
+}
+@media only screen and (min-width: 768px) {
+  li {
+    animation: li 0.3s ease;
+    -webkit-animation: li 0.3s ease;
+}
+}
+@keyframes li {
+  0% {
+    opacity: 0.5;
+    transform: translateY(-10%);
+    -webkit-transform: translateY(-10%);
+    -moz-transform: translateY(-10%);
+    -ms-transform: translateY(-10%);
+    -o-transform: translateY(-10%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0%);
+    -webkit-transform: translateY(0%);
+    -moz-transform: translateY(0%);
+    -ms-transform: translateY(0%);
+    -o-transform: translateY(0%);
+  }
 }

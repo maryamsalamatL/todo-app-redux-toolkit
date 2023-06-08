@@ -1,6 +1,6 @@
 .mainContainer {
   width: 100%;
-  padding-bottom: 500px;
+
   display: flex;
   flex-direction: column;
   color: var(--text-color);
@@ -25,8 +25,7 @@
   align-items: center;
   margin-bottom: 15px;
 }
-.topSection h3 {
-}
+
 .topSection button {
   border: none;
   outline: none;
@@ -35,4 +34,35 @@
   color: var(--text-color);
   display: flex;
   align-items: center;
+}
+.topSection .showBtn {
+  animation: btn 0.3s ease;
+  -webkit-animation: btn 0.3s ease;
+}
+@keyframes btn {
+  0% {
+    transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+  }
+  100% {
+    transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+  }
+}
+@media only screen and (min-width: 768px) {
+  .mainContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .mainContainer section {
+    width: 32%;
+    height: 70vh;
+  }
 }

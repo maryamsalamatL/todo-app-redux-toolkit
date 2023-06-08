@@ -1,7 +1,7 @@
 import styles from "./TodoList.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { getAsyncTodos } from "../../features/todos/todosSlice";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Todo from "./Todo";
 import { BiChevronUp, BiPlus } from "react-icons/bi";
 import AddTodoForm from "./AddTodoForm";
@@ -21,17 +21,23 @@ const TodoList = () => {
 
   return (
     <div className={styles.mainContainer}>
-      <RenderTodos title="Todos" todos={newTodos} id="new-todo-section" />
-      <RenderTodos
-        title="Important Todos"
-        todos={importantTodos}
-        id="important-todo-section"
-      />
-      <RenderTodos
-        title="Completed Todos"
-        todos={completedTodos}
-        id="completed-todo-section"
-      />
+      <RenderTodos title="New Todos" todos={newTodos} id="new-todo-section" />
+      {todos.length ? (
+        <>
+          <RenderTodos
+            title="Important Todos"
+            todos={importantTodos}
+            id="important-todo-section"
+          />
+          <RenderTodos
+            title="Completed Todos"
+            todos={completedTodos}
+            id="completed-todo-section"
+          />
+        </>
+      ) : (
+        ""
+      )}
     </div>
   );
 };
@@ -47,15 +53,24 @@ const RenderTodos = ({ title, todos, id }) => {
         <h3>{title}</h3>
         {id === "new-todo-section" && (
           <button onClick={() => setIsShow(!isShow)}>
-            {isShow ? <BiChevronUp /> : <BiPlus />}
+            {isShow ? (
+              <BiChevronUp className={styles.showBtn} />
+            ) : (
+              <BiPlus className={styles.showBtn} />
+            )}
           </button>
         )}
       </div>
-      {isShow && <AddTodoForm />}
+      {isShow && <AddTodoForm setIsShow={setIsShow} />}
+
       <ul>
-        {todos.map((todo) => (
-          <Todo key={todo.id} {...todo} sectionID={id} />
-        ))}
+        {todos.length === 0 ? (
+          <p style={{ marginTop: "20px" }}>
+            there is no {title.split(" ")[0].toLowerCase()} todos
+          </p>
+        ) : (
+          todos.map((todo) => <Todo key={todo.id} {...todo} sectionID={id} />)
+        )}
       </ul>
     </section>
   );

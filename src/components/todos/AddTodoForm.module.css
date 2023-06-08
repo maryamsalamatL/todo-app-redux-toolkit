@@ -9,13 +9,13 @@
   display: flex;
   justify-content: space-between;
   border: 1px solid var(--border-color);
-  animation: form 0.2s ease;
+  animation: form 0.3s ease;
   border-radius: 5px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
-  -webkit-animation: form 0.2s ease;
+  -webkit-animation: form 0.3s ease;
 }
 input {
   width: 100%;

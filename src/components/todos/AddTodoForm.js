@@ -1,9 +1,9 @@
 import styles from "./AddTodoForm.module.css";
 import { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { addAsyncTodo, getAsyncTodos } from "../../features/todos/todosSlice";
+import { addAsyncTodo  } from "../../features/todos/todosSlice";
 
-const AddTodoForm = () => {
+const AddTodoForm = ({ setIsShow }) => {
   const [inputValue, setInputValue] = useState("");
   const [error, setError] = useState(false);
   const dispatch = useDispatch();
@@ -14,12 +14,13 @@ const AddTodoForm = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (inputValue == "") return setError(true);
+    if (inputValue === "") return setError(true);
     setError(false);
     dispatch(addAsyncTodo({ title: inputValue }));
     setInputValue("");
+    setIsShow(false);
   };
-  console.log(error);
+ 
   return (
     <div className={styles.mainContainer}>
       <form onSubmit={submitHandler}>
