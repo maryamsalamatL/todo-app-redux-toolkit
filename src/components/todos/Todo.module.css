@@ -1,15 +1,27 @@
 li {
-  /* background-color: var(--main-white); */
   border: 1px solid var(--border-color);
   display: flex;
   justify-content: space-between;
   margin: 10px 0px;
   padding: 10px 0px;
+  cursor: grabbing;
   border-radius: 5px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
+}
+li:hover {
+  transform: scale(1.5);
+  -webkit-transform: scale(1.03);
+  -moz-transform: scale(1.5);
+  -ms-transform: scale(1.5);
+  -o-transform: scale(1.5);
+  transition: all 0.2s ease;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -ms-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
 }
 li.yellowBorder {
   border-left: 5px solid var(--yellow-color);
@@ -20,7 +32,9 @@ li.greenBorder {
 li.pinkBorder {
   border-left: 5px solid var(--pink-color);
 }
-
+li.dragging {
+  opacity: 0.5;
+}
 .titleBox {
   width: 40%;
   display: flex;
@@ -51,20 +65,17 @@ li.pinkBorder {
   outline: none;
   font-size: 17px;
 }
-.importantBtn {
-  /*color: var(--green-color);
-  */
+.inProgressBtn {
   color: var(--text-color);
 }
 .removeBtn {
-  /* color: var(--red-color); */
   color: var(--text-color);
 }
 @media only screen and (min-width: 768px) {
   li {
     animation: li 0.3s ease;
     -webkit-animation: li 0.3s ease;
-}
+  }
 }
 @keyframes li {
   0% {

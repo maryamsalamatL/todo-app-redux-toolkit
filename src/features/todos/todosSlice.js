@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+//we are not using async actions in this case anymore
+//there is diffrences between async and sync actions because adding dnd and changin logic
 export const getAsyncTodos = createAsyncThunk(
   "todos/getAsyncTodos",
   async (_, { rejectWithValue }) => {
@@ -80,14 +82,21 @@ const todosSlice = createSlice({
   name: "todos",
   initialState,
   reducers: {
-    //reducer is for sync actions, we do not use in this case anymore
+    //reducer is for sync actions
+    getSavedTodos: (state) => {
+      const savedTodos = JSON.parse(localStorage.getItem("todos")) || [];
+      state.todos = savedTodos;
+    },
     addTodo: (state, action) => {
       const newTodo = {
         id: Date.now(),
         title: action.payload.title,
-        completed: false,
+        status: "todos",
+        isCompleted: false,
+        isInProgress: false,
       };
       state.todos.push(newTodo);
+      localStorage.setItem("todos", JSON.stringify(state.todos));
     },
     deleteTodo: (state, action) => {
       //didn't work for me!
@@ -100,12 +109,55 @@ const todosSlice = createSlice({
         (item) => item.id === Number(action.payload.id)
       );
       state.todos.splice(index, 1);
+      localStorage.setItem("todos", JSON.stringify(state.todos));
     },
-    toggleTodo: (state, action) => {
+    dndToTodos: (state, action) => {
       const item = state.todos.find(
         (item) => item.id === Number(action.payload.id)
       );
-      item.completed = !item.completed;
+      item.status = "todos";
+      item.isCompleted = false;
+      item.isInProgress = false;
+      localStorage.setItem("todos", JSON.stringify(state.todos));
+    },
+    dndToInProgress: (state, action) => {
+      const item = state.todos.find(
+        (item) => item.id === Number(action.payload.id)
+      );
+      item.status = "inProgress";
+      item.isInProgress = true;
+      item.isCompleted = false;
+      localStorage.setItem("todos", JSON.stringify(state.todos));
+    },
+    dndToCompleted: (state, action) => {
+      const item = state.todos.find(
+        (item) => item.id === Number(action.payload.id)
+      );
+      item.status = "completed";
+      item.isCompleted = true;
+      item.isInProgress = false;
+      localStorage.setItem("todos", JSON.stringify(state.todos));
+    },
+    toggleTodoCompleted: (state, action) => {
+      const item = state.todos.find(
+        (item) => item.id === Number(action.payload.id)
+      );
+      item.isCompleted = !item.isCompleted;
+      item.isCompleted
+        ? (item.status = "completed") && (item.isInProgress = false)
+        : (item.status = "todos");
+      localStorage.setItem("todos", JSON.stringify(state.todos));
+    },
+    toggleTodoInProgress: (state, action) => {
+      const item = state.todos.find(
+        (item) => item.id === Number(action.payload.id)
+      );
+      item.isInProgress
+        ? (item.status = "completed") && (item.isCompleted = true)
+        : (item.status = "inProgress") && (item.isCompleted = false);
+      item.isInProgress = !item.isInProgress;
+
+      localStorage.setItem("todos", JSON.stringify(state.todos));
     },
   },
   //for async actions
@@ -147,5 +199,14 @@ const todosSlice = createSlice({
     },
   },
 });
-export const { addTodo, deleteTodo, toggleTodo } = todosSlice.actions;
+export const {
+  getSavedTodos,
+  addTodo,
+  deleteTodo,
+  toggleTodoCompleted,
+  toggleTodoInProgress,
+  dndToTodos,
+  dndToCompleted,
+  dndToInProgress,
+} = todosSlice.actions;
 export default todosSlice.reducer;

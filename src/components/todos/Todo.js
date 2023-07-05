@@ -1,49 +1,65 @@
 import styles from "./Todo.module.css";
 import { useDispatch } from "react-redux";
 import {
-  toggleAsyncCompleted,
-  deleteAsyncTodo,
-  toggleAsyncImportant,
+  toggleTodoCompleted,
+  toggleTodoInProgress,
+  deleteTodo,
 } from "../../features/todos/todosSlice";
-import { RxStarFilled, RxStar } from "react-icons/rx";
 import { BiTrash } from "react-icons/bi";
+import { useDrag } from "react-dnd";
+import {
+  FcNeutralTrading,
+  FcPositiveDynamic,
+  FcApproval,
+} from "react-icons/fc";
 
-const Todo = ({ id, completed, title, important, sectionID }) => {
+const Todo = ({ id, title, status, sectionID, isCompleted, isInProgress }) => {
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: "todo",
+    item: { id },
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  }));
+
   const dispatch = useDispatch();
   return (
     <li
-      className={
+      ref={drag}
+      className={`${
         sectionID === "new-todo-section"
           ? styles.yellowBorder
-          : sectionID === "important-todo-section"
+          : sectionID === "in-progress-todo-section"
           ? styles.pinkBorder
           : sectionID === "completed-todo-section"
           ? styles.greenBorder
           : ""
-      }
+      } ${isDragging ? styles.dragging : ""}`}
     >
       <div className={styles.titleBox}>
         <input
           type="checkbox"
-          checked={completed}
-          onChange={() =>
-            dispatch(toggleAsyncCompleted({ id, completed: !completed }))
-          }
+          checked={isCompleted}
+          onChange={() => dispatch(toggleTodoCompleted({ id }))}
         />
         <p>{title}</p>
       </div>
       <div className={styles.btnBox}>
         <button
-          className={styles.importantBtn}
-          onClick={() =>
-            dispatch(toggleAsyncImportant({ id, important: !important }))
-          }
+          className={styles.inProgressBtn}
+          onClick={() => dispatch(toggleTodoInProgress({ id }))}
         >
-          {important ? <RxStarFilled /> : <RxStar />}
+          {status === "inProgress" ? (
+            <FcPositiveDynamic />
+          ) : status === "completed" ? (
+            <FcApproval />
+          ) : (
+            <FcNeutralTrading />
+          )}
         </button>
         <button
           className={styles.removeBtn}
-          onClick={() => dispatch(deleteAsyncTodo({ id }))}
+          onClick={() => dispatch(deleteTodo({ id }))}
         >
           <BiTrash />
         </button>
